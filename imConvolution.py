@@ -18,7 +18,6 @@ import tensorflow as tf
 
 # starting loading to dataset
 dirname = 'dataset'
-
 filenames = [os.path.join(dirname, fname)
              for fname in os.listdir(dirname)]
 
@@ -34,4 +33,9 @@ imgs = [plt.imread(fname)[..., :3]
 #  this is not our case so y letting below code on comments
 
 imgs = np.array(imgs).astype(np.float32)
+
+# Now we are ready to see (before convolution) all of our image data
+assert (imgs.shape == (100, 100, 100, 3))
+plt.figure(figsize=(10, 10))
+plt.imshow(visualization(imgs, saveto='dataset.jpg'))
 
