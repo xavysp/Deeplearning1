@@ -147,7 +147,7 @@ with tf.Session(graph=g):
     mean = 0.0
     sigma = 1.0
     x = tf.linspace(-3.0, 3.0, ksize)
-    z = (tf.exp(tf.neg(tf.pow(x-mean, 23.0) /
+    z = (tf.exp(tf.neg(tf.pow(x-mean, 2.0) /
                        (2.0 * tf.pow(sigma, 2.0)))) *
          (1.0 /(sigma * tf.sqrt(2.0*3.1415))))
 
@@ -159,5 +159,37 @@ with tf.Session(graph=g):
     wave = tf.matmul(ys, ones)
     gabor = tf.mul(wave, z_2d)
     gaborVal = gabor.eval()
-    kernel = np.concatenate([gaborVal[:,:,np.newaxis] for i in range(3)], axis=2)
+
+kernel = np.concatenate([gaborVal[:,:,np.newaxis] for i in range(3)], axis=2)
+kernel_4d = np.reshape(kernel,(ksize,ksize,3,1))
+
+# lets look at visually our result
+print(imgs.dtype)
+print(kernel_4d.dtype)
+print (kernel_4d.shape)
+assert (kernel_4d.shape == (ksize, ksize, 3, 1))
+plt.figure(figsize=(5, 5))
+plt.imshow(kernel_4d[:,:,0,0], cmap='gray')
+plt.imsave(arr=kernel_4d[:,:,0,0], fname='kernel.png', cmap='gray')
+plt.show()
+
+#start with convolution
+# **************** convolution ***************
+g=tf.Graph()
+with tf.Session(graph=g):
+    convolved = tf.nn.conv2d(normImgs, kernel_4d, strides=[1, 1, 1, 1], padding='SAME')
+    res = convolved.eval()
+
+convolvedShow = (res -np.min(res))/(np.max(res)-np.min(res))
+# now you can see what happen with our convolution
+print(convolvedShow.dtype)
+print(convolvedShow.shape)
+plt.figure(figsize=(10, 10))
+plt.imshow(convolvedShow[0,:,:,0], cmap='gray')
+plt.show()
+
+
+plt.figure(figsize=(10, 10))
+plt.imshow(visualization(convolvedShow[...,0], saveas='convolved.png'), cmap='gray')
+plt.show()
 
