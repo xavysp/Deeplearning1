@@ -193,3 +193,8 @@ plt.figure(figsize=(10, 10))
 plt.imshow(visualization(convolvedShow[...,0], saveas='convolved.png'), cmap='gray')
 plt.show()
 
+# *************** Sort Dadaset ******************
+
+flattened = tf.reshape(res, [res.shape[0],(res.shape[1]*res.shape[2]*
+                                           res.shape[3])])
+print(flattened.get_shape().as_list())
