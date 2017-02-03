@@ -184,10 +184,6 @@ convolvedShow = (res -np.min(res))/(np.max(res)-np.min(res))
 # now you can see what happen with our convolution
 print(convolvedShow.dtype)
 print(convolvedShow.shape)
-plt.figure(figsize=(10, 10))
-plt.imshow(convolvedShow[0,:,:,0], cmap='gray')
-plt.show()
-
 
 plt.figure(figsize=(10, 10))
 plt.imshow(visualization(convolvedShow[...,0], saveas='convolved.png'), cmap='gray')
