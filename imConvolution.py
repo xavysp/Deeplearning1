@@ -140,4 +140,24 @@ plt.figure(figsize=(10, 10))
 plt.imshow(visualization(normImgs_show, saveas='normalized-visual.png'))
 plt.show()
 
-# The most import step Convolving dataset
+# ***********The most import step Convolving dataset *******
+ksize = 32
+g = tf.Graph()
+with tf.Session(graph=g):
+    mean = 0.0
+    sigma = 1.0
+    x = tf.linspace(-3.0, 3.0, ksize)
+    z = (tf.exp(tf.neg(tf.pow(x-mean, 23.0) /
+                       (2.0 * tf.pow(sigma, 2.0)))) *
+         (1.0 /(sigma * tf.sqrt(2.0*3.1415))))
+
+    z_2d = tf.matmul(tf.reshape(z,[ksize, 1]), tf.reshape(z,[1, ksize]))
+
+    ones = tf.ones((1, ksize))
+    ys = tf.sin(x)
+    ys = tf.reshape(ys, [ksize, 1])
+    wave = tf.matmul(ys, ones)
+    gabor = tf.mul(wave, z_2d)
+    gaborVal = gabor.eval()
+    kernel = np.concatenate([gaborVal[:,:,np.newaxis] for i in range(3)], axis=2)
+
