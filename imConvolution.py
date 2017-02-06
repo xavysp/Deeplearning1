@@ -141,7 +141,7 @@ plt.imshow(visualization(normImgs_show, saveas='normalized-visual.png'))
 plt.show()
 
 # ***********The most import step Convolving dataset *******
-ksize = 32
+ksize = 16
 g = tf.Graph()
 with tf.Session(graph=g):
     mean = 0.0
@@ -194,3 +194,20 @@ plt.show()
 flattened = tf.reshape(res, [res.shape[0],(res.shape[1]*res.shape[2]*
                                            res.shape[3])])
 print(flattened.get_shape().as_list())
+assert (flattened.get_shape().as_list()== [100, 10000]);
+
+values = tf.reduce_sum(flattened, reduction_indices=1)
+
+idxs_op = tf.nn.top_k(values, k=100)[1]
+idxs = sess.run(idxs_op)
+
+sortedImgs= np.array([imgs[i] for i in idxs])
+
+# ok look at the results
+assert (sortedImgs.shape == (100, 100, 100, 3))
+plt.figure(figsize=(10, 10))
+plt.imshow(visualization(sortedImgs, saveas='sorted.png'))
+plt.show()
+print ('We have finished without problems')
+print('**********Congratulations*************')
+# finish now you are ready to double check
