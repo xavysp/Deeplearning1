@@ -10,8 +10,9 @@ import sys
 import os
 import numpy as np
 import matplotlib
-matplotlib.use('GTKAgg')  #('Qt4Agg')  #('GTKAgg')
+matplotlib.use('TkAgg')  #('Qt4Agg')  #('GTKAgg')
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 from skimage.transform import resize
 import tensorflow as tf
 from time import sleep
@@ -21,7 +22,7 @@ from time import sleep
 def visualization(imgs, saveas='dataset'):
 
     if isinstance(imgs, list):  # isinstance checking a variable
-        imgs = np.array(imgs)   # if it is on concordance with its type
+        imgs = np.array(imgs)   # if it is on concordance with its type >) ;)
     imgHeight = imgs.shape[1]
     imgWidth = imgs.shape[2]
     nPlots = int(np.ceil(np.sqrt(imgs.shape[0])))
@@ -211,3 +212,13 @@ plt.show()
 print ('We have finished without problems')
 print('**********Congratulations*************')
 # finish now you are ready to double check
+
+print("***Let's continue coding ***")
+fig = plt.figure(figsize=(10,6))
+ax =  fig.gca()
+x = np.linspace(-1,1,200)
+hz = 10
+cost = np.sin(hz*x)*np.exp(-x)
+ax.plot(x, cost)
+ax.set_ylabel('Cost')
+ax.set_xlabel('Some parameter')
